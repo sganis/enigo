@@ -51,6 +51,7 @@ extern "C" {
     fn xdo_free(xdo: Xdo);
     fn xdo_new(display: *const c_char) -> Xdo;
     fn xdo_focus_window(xdo: Xdo, window: Window) -> c_int;
+    fn xdo_set_window_size(xdo: Xdo, window: Window, width: c_int, height: c_int, flags: c_int) -> c_int;
     fn xdo_get_pid_window(xdo: Xdo, window: Window) -> c_int;
     fn xdo_search_windows(xdo: Xdo, search: *const c_void,
         windowlist_ret: *mut *mut Window, nwindows_ret: *mut c_uint) -> c_int;
@@ -129,6 +130,13 @@ impl Enigo {
     pub fn window_focus(&mut self) -> i32{
         unsafe {
             xdo_focus_window(self.xdo, self.window)
+        }
+    }
+    /// Set window size
+    /// This is Linux-specific
+    pub fn set_window_size(&mut self, width: i32, height: i32) -> i32{
+        unsafe {
+            xdo_set_window_size(self.xdo, self.window, width, height, 0)
         }
     }
     /// Get pid of window ID
